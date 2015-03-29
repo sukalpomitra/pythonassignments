@@ -1,0 +1,4 @@
+python manage.py runserver
+python manage.py syncdb
+
+http://help.mandrill.com/entries/21681117-How-do-I-use-Mandrill-if-I-already-have-a-MailChimp-account-
