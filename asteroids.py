@@ -100,6 +100,7 @@ def group_collide(group, other_object):
     for rock in group:
         if rock.collide(other_object):
             rock_removed.add(rock)
+            explosion_group.add(Sprite(rock.get_position(), [0,0], 0, 0, explosion_image, explosion_info, explosion_sound))
             collission = True
     group.difference_update(rock_removed)
     return collission
@@ -214,7 +215,11 @@ class Sprite:
             return False
     
     def draw(self, canvas):
-        canvas.draw_image(self.image, self.image_center, self.image_size,
+        if (self.animated):
+            canvas.draw_image(self.image, [self.image_center[0] + self.age * self.image_size[0],self.image_center[1]], self.image_size,
+                          self.pos, self.image_size, self.angle)
+        else:
+            canvas.draw_image(self.image, self.image_center, self.image_size,
                           self.pos, self.image_size, self.angle)
 
     def update(self):
@@ -304,6 +309,8 @@ def draw(canvas):
     
     score += group_group_collide(missile_group, rock_group)
     
+    process_sprite_group(explosion_group, canvas)
+    
     # update ship and sprites
     my_ship.update()
 
@@ -329,6 +336,7 @@ frame = simplegui.create_frame("Asteroids", WIDTH, HEIGHT)
 my_ship = Ship([WIDTH / 2, HEIGHT / 2], [0, 0], 0, ship_image, ship_info)
 rock_group = set()
 missile_group = set()
+explosion_group = set()
 
 
 # register handlers
